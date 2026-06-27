@@ -1,118 +1,117 @@
 # Project Workflow
 
 ## Overview
-This project delivers a credit approval prediction system using machine learning, applicant data capture, credit history analysis, and a web API for decision delivery. The workflow covers preparation, modelling, prediction, deployment, and operations.
+The Credit Card Approval Prediction project follows a structured machine learning workflow to predict whether a credit card application should be approved or rejected. The workflow is organized into epics and stories to guide the project from data collection through deployment.
 
-## System Architecture
-- User interface or API for application submission.
-- Data layer containing applicant and credit history entities.
-- Machine learning layer that preprocesses data, trains, validates, and scores applications.
-- Persistence layer for saving users, applications, model artifacts, and predictions.
-- Deployment layer that exposes prediction services to end users.
+## Epic 1: Data Collection
 
-## Key Entities and Relationships
-- `Users`
-  - Stores login information and role (applicant, admin).
-  - Related to `Applicant_Details` through `UserID`.
-- `Applicant_Details`
-  - Contains demographic, employment, education, and income fields.
-  - Example fields: `Gender`, `Age`, `IncomeType`, `EducationType`, `FamilyStatus`, `HousingType`, `EmploymentDays`.
-  - Each applicant may have one or multiple credit history records.
-- `Credit_History`
-  - Contains past loan and repayment behavior.
-  - Example fields: `CreditType`, `Status`, `MonthlyPayment`, `RemainingDebt`, `Term`.
-  - Used to enrich prediction inputs and improve model accuracy.
-- `ML_Model`
-  - Represents the trained model artifact and metadata.
-  - Stores model version, training date, metrics, and feature definitions.
-- `Approval_Prediction`
-  - Stores prediction results for each application.
-  - Includes predicted approval status, probability score, and timestamp.
+### Story 1: Download and prepare the dataset
+- Download the credit approval dataset from the project source or repository.
+- Verify the dataset format and contents.
+- Load the dataset into the working environment using Python and Pandas.
+- Save a clean copy of the raw dataset for repeatable analysis.
 
-## Detailed Workflow Steps
+### Story 2: Prepare dataset for analysis and model development
+- Confirm required columns are present, including applicant details, financial features, and approval target.
+- Check dataset size, missing value counts, and data types.
+- Create a dataset summary file or notebook to record initial observations.
 
-### 1. Environment Setup
-1. Install required software:
-   - Python 3.10 or later
-   - Git
-   - Optional: Anaconda Navigator, VS Code, PyCharm
-2. Create and activate an isolated Python environment.
-3. Install required libraries from `requirements.txt` or manually with:
-   - `pip install numpy pandas scikit-learn matplotlib seaborn flask`
-4. Verify dependencies by importing the libraries in Python.
+## Epic 2: Visualizing and Analysing the Data
 
-### 2. Data Ingestion and Validation
-1. Identify input sources: user form submissions, CSV files, or database tables.
-2. Load raw applicant and credit history data into Pandas DataFrames.
-3. Validate data quality:
-   - confirm required columns exist
-   - verify numeric ranges and categorical values
-   - detect duplicate records and invalid entries
-4. Store cleaned data in the project database or intermediate files.
+### Story 1: Import required Python libraries
+- Import core libraries: `numpy`, `pandas`, `matplotlib`, `seaborn`, `scikit-learn`.
+- Import any helper libraries for data handling, plotting, and model evaluation.
+- Define reusable functions for loading and displaying data.
 
-### 3. Data Preprocessing
-1. Handle missing values via imputation or removal.
-2. Encode categorical features:
-   - one-hot encode `IncomeType`, `EducationType`, `FamilyStatus`, `HousingType`
-   - map ordinal categories if any
-3. Scale numeric features such as `EmploymentDays`, `Age`, `MonthlyPayment`, `RemainingDebt`.
-4. Engineer derived features from credit history, such as:
-   - total number of past loans
-   - average repayment ratio
-   - number of delinquent accounts
-5. Split the dataset into training, validation, and test partitions.
+### Story 2: Read and explore the dataset
+- Load the dataset into a DataFrame and inspect the first rows.
+- Explore dataset structure with `info()`, `describe()`, and value counts.
+- Identify the target column and determine which features are input variables.
 
-### 4. Model Training and Evaluation
-1. Choose one or more algorithms from scikit-learn:
-   - logistic regression, decision trees, random forest, gradient boosting
-2. Train models using applicant and credit history features.
-3. Evaluate performance with metrics such as:
-   - accuracy
-   - precision, recall, F1-score
-   - ROC AUC
-4. Perform hyperparameter tuning to improve model generalization.
-5. Save the selected model artifact and store training metadata.
-6. Document the final model version and evaluation results.
+### Story 3: Univariate analysis
+- Visualize the distribution of numerical features using histograms and density plots.
+- Review categorical feature frequencies using bar charts.
+- Detect imbalances in the approval target or key categories.
 
-### 5. Prediction and Decision Flow
-1. A user submits an application through the frontend or API.
-2. Persist the application in `Applicant_Details`.
-3. Load related `Credit_History` records for the applicant.
-4. Apply the same preprocessing pipeline used during training.
-5. Call the trained `ML_Model` to generate a prediction.
-6. Save the result in `Approval_Prediction` with:
-   - approval status (`approved` / `declined`)
-   - confidence score
-   - applied model version
-7. Return the predicted outcome to the user.
+### Story 4: Multivariate analysis
+- Examine relationships between pairs of features using scatter plots and correlation matrices.
+- Compare applicant demographics and financial attributes against approval outcomes.
+- Identify feature interactions that may affect model performance.
 
-### 6. Deployment and Monitoring
-1. Build a Flask web service for prediction requests.
-2. Expose endpoints for:
-   - application submission
-   - prediction retrieval
-   - model health checks
-3. Deploy the service to a server or cloud host.
-4. Monitor model and application performance:
-   - API uptime
-   - prediction latency
-   - accuracy drift over time
-5. Plan periodic retraining when new data becomes available.
+### Story 5: Descriptive statistics
+- Generate summary statistics for numerical and categorical variables.
+- Calculate mean, median, standard deviation, and value proportions.
+- Document key trends, outliers, and dataset characteristics.
 
-## Implementation Notes
-- Keep data validation and feature engineering consistent between training and prediction.
-- Store model metadata to support version tracking and rollbacks.
-- Use logging for every request and model decision.
-- Implement error handling for invalid inputs and missing credit history.
+## Epic 3: Data Pre-Processing
 
-## Expected Outcomes
-- Clean and validated applicant data drives accurate predictions.
-- Credit history improves risk assessment.
-- Prediction results are stored and auditable.
-- The deployed system supports user applications and returns fast loan decisions.
+### Story 1: Identify and remove duplicate records
+- Check for duplicate rows in the dataset.
+- Remove duplicates while preserving original data quality.
+- Document how many duplicates were found and removed.
 
-## Future Enhancements
-- Add administrator dashboards for model performance and application review.
-- Support batch scoring of multiple applicants.
-- Introduce explainability output for predictions, such as feature importance.
-- Add authentication and role-based access control for secure submissions.
+### Story 2: Detect and handle missing values
+- Identify missing values in each column.
+- Decide whether to impute, fill, or remove missing entries.
+- Apply consistent missing value handling to maintain dataset integrity.
+
+### Story 3: Clean and merge data
+- Clean erroneous or inconsistent entries in categorical fields.
+- Normalize text fields and standardize feature names.
+- Merge related datasets if necessary (for example, applicant data with credit history data).
+
+### Story 4: Feature engineering
+- Create new features from existing data to improve model signal.
+- Example engineered features: debt-to-income ratio, employment length, credit utilization.
+- Add features that represent important applicant or credit risk patterns.
+
+### Story 5: Convert categorical variables
+- Convert categorical features into numeric form suitable for machine learning.
+- Use encoding methods such as one-hot encoding or label encoding.
+- Ensure the same encoding scheme is used during training and prediction.
+
+## Epic 4: Model Building
+
+### Story 1: Train a Logistic Regression model
+- Define a Logistic Regression pipeline with preprocessing.
+- Train the model on the prepared dataset.
+- Evaluate model performance on validation data.
+- Record results and metrics for later comparison.
+
+### Story 2: Build and test a Random Forest model
+- Define a Random Forest model using scikit-learn.
+- Train and validate the model.
+- Evaluate accuracy, precision, recall, and other relevant metrics.
+- Compare results against the Logistic Regression baseline.
+
+### Story 3: Develop a Decision Tree model
+- Train a Decision Tree classifier using the same features.
+- Analyze the model's interpretability and performance.
+- Check for overfitting and apply pruning or hyperparameter tuning.
+
+### Story 4: Compare model performance
+- Compare the trained models using consistent evaluation metrics.
+- Choose the best-performing model for deployment.
+- Save the chosen model artifact and document the model selection rationale.
+
+## Epic 5: Application Building
+
+### Story 1: Design and develop HTML pages
+- Create a simple user interface for application submission.
+- Design input forms to capture applicant and financial information.
+- Add result display pages for showing approval predictions.
+
+### Story 2: Build the Python application and integrate the model
+- Develop the backend application using Flask or another framework.
+- Load the trained model and preprocessing pipeline.
+- Accept user inputs, preprocess them, and return predictions.
+
+### Story 3: Run, test, and validate the application
+- Test the application end-to-end with sample applications.
+- Validate that predictions are returned correctly and that the interface works.
+- Fix any errors in form handling, model integration, or deployment.
+
+## Notes
+- This workflow follows a complete ML lifecycle from data collection to deployment.
+- Keep the data pipeline and model pipeline consistent across development and production.
+- Document every stage so the project remains maintainable and auditable.
