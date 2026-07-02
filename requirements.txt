@@ -1,6 +1,2 @@
-pandas
-scikit-learn
-matplotlib
-seaborn
-numpy
-flask
+Flask
+qrcode[pil]
