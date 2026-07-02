@@ -1,0 +1,15 @@
+{
+  "version": 3,
+  "builds": [
+    {
+      "src": "Project_folder/Epic_5_Application_building/app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "Project_folder/Epic_5_Application_building/app.py"
+    }
+  ]
+}

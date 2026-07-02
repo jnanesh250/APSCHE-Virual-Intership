@@ -1,4 +1,5 @@
 Flask
+qrcode[pil]
 joblib
 numpy
 pandas
