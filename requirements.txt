@@ -1,2 +1,6 @@
 Flask
 qrcode[pil]
+joblib
+numpy
+pandas
+scikit-learn
